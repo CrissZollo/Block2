@@ -1,5 +1,8 @@
 rooms = [];
 
+let MAXROOMS = 5;
+
+
 class Location
 {
 
@@ -111,6 +114,7 @@ class Location
         ];
         this.exits = [];
 
+        this.roomID = 0;
         this.roomName = this.NameGen();
         this.environment = this.Environment();
     }
@@ -134,11 +138,16 @@ class Location
 
     Exits()
     {
-        switch (roomID) {
-            case value:
+        switch (roomID) 
+        {
+            case 0:
                 
                 break;
         
+            case MAXROOMS:
+
+             break;
+
             default:
                 break;
         }
@@ -146,17 +155,20 @@ class Location
     
 }
 
+// Generates a new room with ID, Name and Exits
 function RoomGen(amountOfRooms, roomArray)
 {
     for (let i = 0; i < amountOfRooms; i++) 
     {        
         roomArray[i] = new Location;
+        roomArray[i].roomID = i;
         roomArray[i].exits = roomArray[i].Exits();
     }
 }
 
-RoomGen(8, rooms);
+RoomGen(MAXROOMS, rooms);
 
+// For Debugging
 function Print(roomArray)
 {
     for (let i = 0; i < rooms.length; i++) 
@@ -164,6 +176,7 @@ function Print(roomArray)
         console.log("Room: " + i);
         console.log(roomArray[i].roomName);
         console.log(roomArray[i].environment);
+        console.log(roomArray[i].roomID);
         console.log(roomArray[i].exits + "\n");
     }
 }
