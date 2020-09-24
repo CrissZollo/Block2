@@ -1,6 +1,7 @@
 rooms = [];
 
-let MAXROOMS = 20;
+let MAXROOMS = 6;
+let COMPLEXITY = 6;
 
 
 class Location
@@ -156,8 +157,8 @@ class Location
     
 }
 
-// Generates a new room with ID, Name and Exits
-function RoomGen(amountOfRooms, roomArray)
+// Generates a new room with ID, Name and Exits + Alternative Exits
+function RoomGen(amountOfRooms, amountOfExtraPaths, roomArray)
 {
     for (let i = 0; i < amountOfRooms; i++) 
     {        
@@ -165,9 +166,50 @@ function RoomGen(amountOfRooms, roomArray)
         roomArray[i].roomID = i;
         roomArray[i].Exits();
     }
+
+
+
+    if(amountOfExtraPaths > 0)  
+    {
+        let conectedRooms = [];
+        for (let i = 0; i < roomArray.length; i++) 
+        {
+            conectedRooms[i] = roomArray[i].exits[i];
+        }
+        let exists = true;
+        let num1 = 0;
+        let num2 = 0;
+
+        console.log(conectedRooms)
+     
+        for (let i = 0; i < amountOfExtraPaths; i++) 
+        {           
+            /*
+                num1 = Math.floor(Math.random() * roomArray.length);
+                num2 = Math.floor(Math.random() * roomArray.length);
+
+                for (let i = 0; i < conectedRooms.length;) 
+                {                      
+                    if (num1 != num2 && ([num1, num2] == conectedRooms[i] || [num1, num2] == conectedRooms[i] || [num2, num1] == conectedRooms[i])) 
+                    {
+                        exists = false;
+                        roomArray[num1].exits[num1].push(num2);
+                        roomArray[num2].exits[num2].push(num1);
+            
+                        console.log(num1 + " " + num2);
+                        conectedRooms.push([num1, num2], [num2, num1]);
+                        i++;
+                    }
+                }
+            */
+
+        }
+    }
+
+
 }
 
-RoomGen(MAXROOMS, rooms);
+RoomGen(MAXROOMS, COMPLEXITY, rooms);
 
 // For Debugging
 function Print(roomArray)
