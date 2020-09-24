@@ -1,6 +1,6 @@
 rooms = [];
 
-let MAXROOMS = 5;
+let MAXROOMS = 20;
 
 
 class Location
@@ -138,17 +138,18 @@ class Location
 
     Exits()
     {
-        switch (roomID) 
+        switch (this.roomID) 
         {
             case 0:
-                
+                this.exits[0] = [MAXROOMS-1, 1];
                 break;
         
-            case MAXROOMS:
-
+            case MAXROOMS-1:
+                this.exits[MAXROOMS-1] = [MAXROOMS-1, 1];
              break;
 
             default:
+                this.exits[this.roomID] = [this.roomID-1, this.roomID+1];
                 break;
         }
     }
@@ -162,7 +163,7 @@ function RoomGen(amountOfRooms, roomArray)
     {        
         roomArray[i] = new Location;
         roomArray[i].roomID = i;
-        roomArray[i].exits = roomArray[i].Exits();
+        roomArray[i].Exits();
     }
 }
 
@@ -176,8 +177,8 @@ function Print(roomArray)
         console.log("Room: " + i);
         console.log(roomArray[i].roomName);
         console.log(roomArray[i].environment);
-        console.log(roomArray[i].roomID);
-        console.log(roomArray[i].exits + "\n");
+        console.log(roomArray[i].exits[i]);
+        console.log(roomArray[i].roomID + "\n");
     }
 }
 
