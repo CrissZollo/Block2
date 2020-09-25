@@ -1,7 +1,7 @@
 rooms = [];
 
-let MAXROOMS = 6;
-let COMPLEXITY = 6;
+let MAXROOMS = 10;
+let COMPLEXITY = 34;
 
 
 class Location
@@ -146,7 +146,7 @@ class Location
                 break;
         
             case MAXROOMS-1:
-                this.exits[MAXROOMS-1] = [MAXROOMS-1, 1];
+                this.exits[MAXROOMS-1] = [MAXROOMS-2, 0];
              break;
 
             default:
@@ -168,44 +168,37 @@ function RoomGen(amountOfRooms, amountOfExtraPaths, roomArray)
     }
 
 
-
-    if(amountOfExtraPaths > 0)  
+    
+    if(amountOfExtraPaths > 0 && amountOfExtraPaths <= (((roomArray.length-3) * roomArray.length) / 2) - 1)  
     {
         let conectedRooms = [];
         for (let i = 0; i < roomArray.length; i++) 
         {
             conectedRooms[i] = roomArray[i].exits[i];
         }
-        let exists = true;
+        
         let num1 = 0;
         let num2 = 0;
 
-        console.log(conectedRooms)
+        
      
         for (let i = 0; i < amountOfExtraPaths; i++) 
         {           
-            /*
+            
                 num1 = Math.floor(Math.random() * roomArray.length);
                 num2 = Math.floor(Math.random() * roomArray.length);
 
-                for (let i = 0; i < conectedRooms.length;) 
-                {                      
-                    if (num1 != num2 && ([num1, num2] == conectedRooms[i] || [num1, num2] == conectedRooms[i] || [num2, num1] == conectedRooms[i])) 
-                    {
-                        exists = false;
-                        roomArray[num1].exits[num1].push(num2);
-                        roomArray[num2].exits[num2].push(num1);
-            
-                        console.log(num1 + " " + num2);
-                        conectedRooms.push([num1, num2], [num2, num1]);
-                        i++;
-                    }
+                while (num1 == num2 || num1 - num2 == 1 || num2 - num1 == 1 || conectedRooms[num1].includes(num2) == true || conectedRooms[num2].includes(num1) == true) 
+                {
+                    num1 = Math.floor(Math.random() * roomArray.length);
+                    num2 = Math.floor(Math.random() * roomArray.length);    
                 }
-            */
-
-        }
+                roomArray[num1].exits[num1].push(num2);
+                roomArray[num2].exits[num2].push(num1);
+    
+                conectedRooms.push([num1, num2]);
+            }
     }
-
 
 }
 
