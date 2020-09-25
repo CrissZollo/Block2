@@ -1,7 +1,7 @@
 rooms = [];
 
-let MAXROOMS = 10;
-let COMPLEXITY = 34;
+let MAXROOMS = 5;
+let COMPLEXITY = 4;
 
 
 class Location
@@ -142,15 +142,18 @@ class Location
         switch (this.roomID) 
         {
             case 0:
-                this.exits[0] = [MAXROOMS-1, 1];
+                this.exits[0] = MAXROOMS-1;
+                this.exits[1] = 1;
                 break;
         
             case MAXROOMS-1:
-                this.exits[MAXROOMS-1] = [MAXROOMS-2, 0];
+                this.exits[0] = MAXROOMS-2;
+                this.exits[1] = 0;
              break;
 
             default:
-                this.exits[this.roomID] = [this.roomID-1, this.roomID+1];
+                this.exits[0] = this.roomID-1;
+                this.exits[1] = this.roomID+1;
                 break;
         }
     }
@@ -174,7 +177,7 @@ function RoomGen(amountOfRooms, amountOfExtraPaths, roomArray)
         let conectedRooms = [];
         for (let i = 0; i < roomArray.length; i++) 
         {
-            conectedRooms[i] = roomArray[i].exits[i];
+            conectedRooms[i] = roomArray[i].exits;
         }
         
         let num1 = 0;
@@ -193,11 +196,15 @@ function RoomGen(amountOfRooms, amountOfExtraPaths, roomArray)
                     num1 = Math.floor(Math.random() * roomArray.length);
                     num2 = Math.floor(Math.random() * roomArray.length);    
                 }
-                roomArray[num1].exits[num1].push(num2);
-                roomArray[num2].exits[num2].push(num1);
-    
+                roomArray[num1].exits.push(num2);
+                roomArray[num2].exits.push(num1);
+                
+                console.log(conectedRooms.includes([4, 1]));
+
+                console.log(num1 + " " + num2);
                 conectedRooms.push([num1, num2]);
             }
+            console.log(conectedRooms);
     }
 
 }
@@ -212,7 +219,7 @@ function Print(roomArray)
         console.log("Room: " + i);
         console.log(roomArray[i].roomName);
         console.log(roomArray[i].environment);
-        console.log(roomArray[i].exits[i]);
+        console.log(roomArray[i].exits);
         console.log(roomArray[i].roomID + "\n");
     }
 }
