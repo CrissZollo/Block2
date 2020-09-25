@@ -1,7 +1,7 @@
 rooms = [];
 
-let MAXROOMS = 5;
-let COMPLEXITY = 4;
+let MAXROOMS = 10;
+let COMPLEXITY = 5;
 
 
 class Location
@@ -91,7 +91,7 @@ class Location
             "gamers",
             "ninjas",
             "monks",
-            "zomnies",
+            "zombies",
             "vampires",
             "undead",
             "hamsters",
@@ -198,8 +198,6 @@ function RoomGen(amountOfRooms, amountOfExtraPaths, roomArray)
                 }
                 roomArray[num1].exits.push(num2);
                 roomArray[num2].exits.push(num1);
-                
-                console.log(conectedRooms.includes([4, 1]));
 
                 console.log(num1 + " " + num2);
                 conectedRooms.push([num1, num2]);
