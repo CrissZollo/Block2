@@ -1,7 +1,9 @@
 rooms = [];
 
-let MAXROOMS = 10;
-let COMPLEXITY = 5;
+let MAXROOMS = 6;
+let COMPLEXITY = 4;
+let START = 4;
+let END = 3;
 
 
 class Location
@@ -121,6 +123,7 @@ class Location
     }
 
 
+
     NameGen()
     {
         let string = "The " + this.nouns[Math.floor(Math.random() * this.nouns.length)] + " " + 
@@ -160,6 +163,7 @@ class Location
     
 }
 
+
 // Generates a new room with ID, Name and Exits + Alternative Exits
 function RoomGen(amountOfRooms, amountOfExtraPaths, roomArray)
 {
@@ -169,47 +173,85 @@ function RoomGen(amountOfRooms, amountOfExtraPaths, roomArray)
         roomArray[i].roomID = i;
         roomArray[i].Exits();
     }
-
-
+    let conectedRooms = [];
+    for (let i = 0; i < roomArray.length; i++) 
+    {
+        conectedRooms[i] = roomArray[i].exits;
+    }
+    
+    console.log((((roomArray.length-3) * roomArray.length) / 2) - 1);
+    
     
     if(amountOfExtraPaths > 0 && amountOfExtraPaths <= (((roomArray.length-3) * roomArray.length) / 2) - 1)  
-    {
-        let conectedRooms = [];
-        for (let i = 0; i < roomArray.length; i++) 
-        {
-            conectedRooms[i] = roomArray[i].exits;
-        }
-        
+    {  
         let num1 = 0;
         let num2 = 0;
 
-        
-     
         for (let i = 0; i < amountOfExtraPaths; i++) 
         {           
             
+            num1 = Math.floor(Math.random() * roomArray.length);
+            num2 = Math.floor(Math.random() * roomArray.length);
+
+            while (num1 == num2 || num1 - num2 == 1 || num2 - num1 == 1 || conectedRooms[num1].includes(num2) == true || conectedRooms[num2].includes(num1) == true) 
+            {
                 num1 = Math.floor(Math.random() * roomArray.length);
-                num2 = Math.floor(Math.random() * roomArray.length);
-
-                while (num1 == num2 || num1 - num2 == 1 || num2 - num1 == 1 || conectedRooms[num1].includes(num2) == true || conectedRooms[num2].includes(num1) == true) 
-                {
-                    num1 = Math.floor(Math.random() * roomArray.length);
-                    num2 = Math.floor(Math.random() * roomArray.length);    
-                }
-                roomArray[num1].exits.push(num2);
-                roomArray[num2].exits.push(num1);
-
-                console.log(num1 + " " + num2);
-                conectedRooms.push([num1, num2]);
+                num2 = Math.floor(Math.random() * roomArray.length);    
             }
-            console.log(conectedRooms);
-    }
+            roomArray[num1].exits.push(num2);
+            roomArray[num2].exits.push(num1);
 
+            console.log(num1 + " " + num2);
+            conectedRooms.push([num1, num2]);
+        }
+    }
+    return conectedRooms;
 }
 
-RoomGen(MAXROOMS, COMPLEXITY, rooms);
 
-// For Debugging
+function AllPaths(source, destination, roomArray)
+{
+    let completePaths = [];
+    let pathsTaken = [source];
+    let iterations = 0;
+
+    while (true) 
+    {
+        
+        for (let i = pathsTaken.length; i >= pathsTaken.length - iterations; i--) 
+        {
+            for (let j = 0; j < pathsTaken[i-1].exits.length; j++) 
+            {
+                pathsTaken.push(pathsTaken[i-1].exits[j]);
+            }
+
+            iterations++;
+        }
+
+        if (pathsTaken.includes(destination)) 
+        {
+            completePaths.push(pathsTaken[temp]);
+            break;
+        }
+    }
+
+    for (let i = 0; i < pathsTaken.length; i++) 
+    {
+        console.log(pathsTaken[i])
+    }
+}
+
+
+
+
+
+console.log(RoomGen(MAXROOMS, COMPLEXITY, rooms));
+
+AllPaths(rooms[START], rooms[END], rooms);
+
+
+
+// For Debugging prints out values from rooms[]
 function Print(roomArray)
 {
     for (let i = 0; i < rooms.length; i++) 
@@ -218,7 +260,7 @@ function Print(roomArray)
         console.log(roomArray[i].roomName);
         console.log(roomArray[i].environment);
         console.log(roomArray[i].exits);
-        console.log(roomArray[i].roomID + "\n");
+        console.log();
     }
 }
 
